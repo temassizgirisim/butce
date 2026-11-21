@@ -17,16 +17,26 @@
           },
           colors: {
             pine: {
-              50: '#f3f8f5',
-              100: '#e3f0e9',
-              200: '#c6ddd0',
-              300: '#8fd3b3',
-              400: '#52b788',
-              500: '#2d6a4f',
-              600: '#1f6344',
+              50: '#f4f8f6',
+              100: '#e4efe9',
+              200: '#c5dcd0',
+              300: '#8cc0a6',
+              400: '#4e9b77',
+              500: '#276b4c',
+              600: '#1b543a',
               700: '#14452f',
               800: '#0d3020',
-              900: '#081f15',
+              900: '#071d13',
+            },
+            gold: {
+              50: '#fbf8ef',
+              100: '#f5edd6',
+              200: '#e8d7a6',
+              300: '#d9bc6e',
+              400: '#d4af37',
+              500: '#c59b27',
+              600: '#9e7b1c',
+              700: '#785c14',
             }
           }
         }
@@ -35,60 +45,104 @@
   </script>
 </head>
 <body class="bg-white text-slate-900 font-sans antialiased min-h-screen py-6 px-4 sm:px-6">
-  <!-- Ana Kapsayıcı -->
   <div class="max-w-6xl mx-auto">
-    
-    <!-- Üst Başlık ve Hızlı İşlem Çubuğu -->
-    <header class="bg-gradient-to-br from-pine-700 to-pine-800 text-white rounded-2xl p-5 sm:p-7 mb-6 shadow-lg shadow-pine-700/15 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div>
-        <div class="inline-flex items-center gap-2 bg-white/15 text-pine-100 text-xs font-semibold px-3 py-1 rounded-full mb-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-300"></span>
-          Otomatik Bütçe Yönetim Sistemi
+
+    <!-- Üst Başlık ve Hızlı İşlemler (Çam Yeşili + Altın Vurgu) -->
+    <header class="bg-gradient-to-br from-pine-700 via-pine-800 to-pine-900 text-white rounded-2xl p-5 sm:p-7 mb-6 shadow-xl shadow-pine-900/15 border border-gold-500/40">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-gold-500/20 border border-gold-400/45 text-gold-200 text-xs font-bold px-3 py-1 rounded-full mb-2.5">
+            <span class="w-2 h-2 rounded-full bg-gold-400"></span>
+            AKILLI MAAŞ GÜNÜ BÜTÇE MOTORU
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+            Maaş Günü Bütçe Planlayıcı
+          </h1>
+          <p class="text-pine-100 text-sm sm:text-base mt-1">
+            Gider ve birikim hedeflerinize göre aylık bütçeyi otomatik hesaplayın veya mevcut maaşınızı dağıtın
+          </p>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-          Maaş Günü Bütçe Planlayıcı
-        </h1>
-        <p class="text-pine-100 text-sm sm:text-base mt-1">
-          Önce birikim, sabit gider talimatı, tam ekstre ve haftalık harcama limiti
-        </p>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button
+            id="presetBtn"
+            type="button"
+            onclick="window.loadSampleData()"
+            class="bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-300 hover:to-gold-400 active:scale-[0.98] text-pine-900 font-extrabold text-sm px-4 py-2.5 rounded-xl transition shadow-md shadow-black/20 cursor-pointer"
+          >
+            Örnek Verileri Doldur
+          </button>
+          <button
+            id="clearBtn"
+            type="button"
+            onclick="window.resetAllData()"
+            class="bg-white/10 hover:bg-white/20 active:scale-[0.98] text-white border border-gold-400/40 font-semibold text-sm px-4 py-2.5 rounded-xl transition cursor-pointer"
+          >
+            Tümünü Sıfırla
+          </button>
+        </div>
       </div>
-      <div class="flex flex-wrap items-center gap-2.5">
-        <button
-          id="resetVideoBtn"
-          type="button"
-          class="bg-white text-pine-700 hover:bg-pine-50 active:scale-[0.99] font-bold text-sm px-4 py-2.5 rounded-xl transition shadow-sm cursor-pointer"
-        >
-          Örnek Bütçe (65.000 TL)
-        </button>
-        <button
-          id="clearBtn"
-          type="button"
-          class="bg-white/15 hover:bg-white/25 active:scale-[0.99] text-white border border-white/25 font-semibold text-sm px-4 py-2.5 rounded-xl transition cursor-pointer"
-        >
-          Sıfırla
-        </button>
+
+      <!-- Çalışma Modu Seçici -->
+      <div class="mt-5 pt-4 border-t border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="inline-flex bg-pine-900/80 p-1 rounded-xl border border-gold-500/30 w-full sm:w-auto">
+          <button
+            id="modeAutoBtn"
+            type="button"
+            onclick="window.setCalcMode('auto')"
+            class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-extrabold transition cursor-pointer bg-gradient-to-r from-gold-400 to-gold-500 text-pine-900 shadow-sm"
+          >
+            Otomatik Bütçe Hesapla
+          </button>
+          <button
+            id="modeFixedBtn"
+            type="button"
+            onclick="window.setCalcMode('fixed')"
+            class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer text-pine-100 hover:text-white"
+          >
+            Sabit Gelirden Dağıt
+          </button>
+        </div>
+        <p id="modeDescription" class="text-xs text-gold-200 font-medium">
+          Aylık bütçe sabit değildir; girdiğiniz tüm giderler ve birikim oranına göre otomatik hesaplanır.
+        </p>
       </div>
     </header>
 
     <!-- İki Sütunlu Ana Düzen -->
     <main class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      
-      <!-- SOL PANEL: Gelir, Sabit Giderler ve Dağılım Ayarları (7 Sütun) -->
+
+      <!-- SOL PANEL: Girdiler -->
       <div class="lg:col-span-7 space-y-6">
-        
-        <!-- Kart 1: Gelir ve Birikim Talimatı -->
-        <section class="bg-white border border-pine-200/80 rounded-2xl p-5 sm:p-6 shadow-sm">
-          <div class="flex items-center justify-between gap-2 mb-4">
-            <h2 class="text-base sm:text-lg font-bold text-pine-700">1. Gelir &amp; Birikim Talimatı</h2>
-            <span class="text-xs font-bold px-3 py-1 rounded-full bg-pine-100 text-pine-700 border border-pine-200">
-              Adım 1 &amp; 4
+
+        <!-- Kart 1: Birikim Hedefi, Hafta Sayısı ve Gelir/Bütçe Durumu -->
+        <section class="bg-white border border-pine-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+          <div class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-pine-100">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-pine-700 text-gold-300 font-extrabold text-xs flex items-center justify-center border border-gold-500/40">1</span>
+              <h2 class="text-base sm:text-lg font-bold text-pine-700">Birikim Hedefi &amp; Ekstre Ayarı</h2>
+            </div>
+            <span id="modeBadge" class="text-xs font-bold px-3 py-1 rounded-full bg-gold-50 text-gold-700 border border-gold-300">
+              Otomatik Hesap Aktif
             </span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label for="salaryInput" class="block text-xs font-semibold text-slate-600 mb-1.5">
-                Aylık Net Gelir / Bütçe (TL)
+            <!-- Otomatik Hesaplanan Bütçe Göstergesi (Auto Mod) / Manuel Maaş Girişi (Fixed Mod) -->
+            <div id="autoBudgetBox">
+              <label class="block text-xs font-bold text-pine-700 mb-1.5">
+                Otomatik Hesaplanan Aylık Bütçe (TL)
+              </label>
+              <div class="w-full bg-pine-50 border-2 border-gold-400 rounded-xl px-3.5 py-2.5 flex items-center justify-between">
+                <span id="inlineAutoBudget" class="text-base font-extrabold text-pine-800">65.000 TL</span>
+                <span class="text-[11px] font-bold text-gold-700 bg-gold-100 px-2 py-0.5 rounded-md">Canlı Hesap</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Alttaki giderler ve birikim % değiştikçe otomatik güncellenir</p>
+            </div>
+
+            <div id="manualSalaryBox" class="hidden">
+              <label for="salaryInput" class="block text-xs font-bold text-slate-600 mb-1.5">
+                Mevcut Aylık Net Geliriniz (TL)
               </label>
               <input
                 id="salaryInput"
@@ -96,16 +150,21 @@
                 min="0"
                 step="100"
                 value="65000"
-                class="w-full bg-pine-50/70 border border-pine-200 focus:border-pine-700 focus:bg-white focus:ring-2 focus:ring-pine-700/15 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 outline-none transition"
+                oninput="window.updateSalary(this.value)"
+                onchange="window.updateSalary(this.value)"
+                class="w-full bg-pine-50/60 border border-pine-200 focus:border-gold-500 focus:bg-white focus:ring-2 focus:ring-gold-400/25 rounded-xl px-3.5 py-2.5 text-sm font-bold text-slate-900 outline-none transition"
               />
+              <p class="text-[11px] text-slate-500 mt-1">Sabit maaşınızdan birikim ve giderler düşülür</p>
             </div>
+
             <div>
-              <label for="weeksInput" class="block text-xs font-semibold text-slate-600 mb-1.5">
+              <label for="weeksInput" class="block text-xs font-bold text-slate-600 mb-1.5">
                 Haftalık Bölme Sayısı
               </label>
               <select
                 id="weeksInput"
-                class="w-full bg-pine-50/70 border border-pine-200 focus:border-pine-700 focus:bg-white focus:ring-2 focus:ring-pine-700/15 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 outline-none transition cursor-pointer"
+                onchange="window.updateWeeks(this.value)"
+                class="w-full bg-pine-50/60 border border-pine-200 focus:border-gold-500 focus:bg-white focus:ring-2 focus:ring-gold-400/25 rounded-xl px-3.5 py-2.5 text-sm font-bold text-slate-900 outline-none transition cursor-pointer"
               >
                 <option value="4" selected>4 Hafta (Standart Ay)</option>
                 <option value="5">5 Hafta</option>
@@ -115,8 +174,8 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label for="savingsRateInput" class="block text-xs font-semibold text-slate-600 mb-1.5">
-                Önce Kendine Öde (%)
+              <label for="savingsRateInput" class="block text-xs font-bold text-slate-600 mb-1.5">
+                Önce Kendine Öde — Birikim Oranı (%)
               </label>
               <input
                 id="savingsRateInput"
@@ -125,18 +184,21 @@
                 max="90"
                 step="1"
                 value="10"
-                class="w-full bg-pine-50/70 border border-pine-200 focus:border-pine-700 focus:bg-white focus:ring-2 focus:ring-pine-700/15 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 outline-none transition"
+                oninput="window.updateSavingsRate(this.value)"
+                onchange="window.updateSavingsRate(this.value)"
+                class="w-full bg-pine-50/60 border border-pine-200 focus:border-gold-500 focus:bg-white focus:ring-2 focus:ring-gold-400/25 rounded-xl px-3.5 py-2.5 text-sm font-bold text-slate-900 outline-none transition"
               />
               <div class="flex flex-wrap gap-1.5 mt-2">
-                <button type="button" data-rate="5" class="pill px-2.5 py-1 text-xs font-semibold rounded-lg border border-pine-200 bg-pine-50 text-slate-600 hover:bg-pine-100 transition cursor-pointer">%5</button>
-                <button type="button" data-rate="10" class="pill px-2.5 py-1 text-xs font-semibold rounded-lg border border-pine-700 bg-pine-700 text-white transition cursor-pointer">%10</button>
-                <button type="button" data-rate="15" class="pill px-2.5 py-1 text-xs font-semibold rounded-lg border border-pine-200 bg-pine-50 text-slate-600 hover:bg-pine-100 transition cursor-pointer">%15</button>
-                <button type="button" data-rate="20" class="pill px-2.5 py-1 text-xs font-semibold rounded-lg border border-pine-200 bg-pine-50 text-slate-600 hover:bg-pine-100 transition cursor-pointer">%20</button>
+                <button type="button" data-rate="5" onclick="window.setSavingsPreset(5)" class="pill px-2.5 py-1.5 text-xs font-bold rounded-lg border border-pine-200 bg-pine-50 text-pine-700 hover:border-gold-500 transition cursor-pointer">%5</button>
+                <button type="button" data-rate="10" onclick="window.setSavingsPreset(10)" class="pill px-2.5 py-1.5 text-xs font-bold rounded-lg border border-gold-500 bg-pine-700 text-gold-300 transition cursor-pointer">%10</button>
+                <button type="button" data-rate="15" onclick="window.setSavingsPreset(15)" class="pill px-2.5 py-1.5 text-xs font-bold rounded-lg border border-pine-200 bg-pine-50 text-pine-700 hover:border-gold-500 transition cursor-pointer">%15</button>
+                <button type="button" data-rate="20" onclick="window.setSavingsPreset(20)" class="pill px-2.5 py-1.5 text-xs font-bold rounded-lg border border-pine-200 bg-pine-50 text-pine-700 hover:border-gold-500 transition cursor-pointer">%20</button>
+                <button type="button" data-rate="25" onclick="window.setSavingsPreset(25)" class="pill px-2.5 py-1.5 text-xs font-bold rounded-lg border border-pine-200 bg-pine-50 text-pine-700 hover:border-gold-500 transition cursor-pointer">%25</button>
               </div>
             </div>
             <div>
-              <label for="cardPaymentInput" class="block text-xs font-semibold text-slate-600 mb-1.5">
-                Kredi Kartı Tam Ekstre (TL)
+              <label for="cardPaymentInput" class="block text-xs font-bold text-slate-600 mb-1.5">
+                Kredi Kartı Tam Ekstre Tutarı (TL)
               </label>
               <input
                 id="cardPaymentInput"
@@ -144,7 +206,9 @@
                 min="0"
                 step="100"
                 value="0"
-                class="w-full bg-pine-50/70 border border-pine-200 focus:border-pine-700 focus:bg-white focus:ring-2 focus:ring-pine-700/15 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 outline-none transition"
+                oninput="window.updateCardPayment(this.value)"
+                onchange="window.updateCardPayment(this.value)"
+                class="w-full bg-pine-50/60 border border-pine-200 focus:border-gold-500 focus:bg-white focus:ring-2 focus:ring-gold-400/25 rounded-xl px-3.5 py-2.5 text-sm font-bold text-slate-900 outline-none transition"
               />
               <p class="text-xs text-slate-500 mt-1.5">Asgari değil, dönem borcunun tamamı</p>
             </div>
@@ -152,126 +216,131 @@
         </section>
 
         <!-- Kart 2: Sabit Gider Talimatları -->
-        <section class="bg-white border border-pine-200/80 rounded-2xl p-5 sm:p-6 shadow-sm">
-          <div class="flex items-center justify-between gap-2 mb-4">
-            <h2 class="text-base sm:text-lg font-bold text-pine-700">2. Sabit Gider Talimatları</h2>
+        <section class="bg-white border border-pine-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+          <div class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-pine-100">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-pine-700 text-gold-300 font-extrabold text-xs flex items-center justify-center border border-gold-500/40">2</span>
+              <h2 class="text-base sm:text-lg font-bold text-pine-700">Sabit Gider Talimatları (TL)</h2>
+            </div>
             <button
-              id="addExpenseBtn"
+              id="addFixedBtn"
               type="button"
-              class="bg-pine-700 hover:bg-pine-800 active:scale-[0.98] text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-xl transition cursor-pointer"
+              onclick="window.addFixedExpense()"
+              class="bg-pine-700 hover:bg-pine-800 active:scale-[0.98] text-gold-200 border border-gold-500/40 text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl transition cursor-pointer shadow-sm"
             >
-              + Kalem Ekle
+              + Sabit Gider Ekle
             </button>
           </div>
 
-          <div id="expenseList" class="space-y-2.5 mb-3"></div>
+          <div id="fixedExpenseList" class="space-y-2.5 mb-3"></div>
 
-          <div class="pt-2.5 border-t border-pine-100 flex items-center justify-between text-xs sm:text-sm">
-            <span class="text-slate-500 font-medium">Otomatik ödeme talimatına bağlı giderler</span>
-            <span id="fixedSummaryText" class="font-bold text-pine-700">Toplam sabit gider: 38.500 TL</span>
+          <div class="pt-3 border-t border-pine-100 flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+            <span class="text-slate-500 font-medium">Otomatik talimata bağlı sabit giderler</span>
+            <span id="fixedSummaryText" class="font-extrabold text-pine-700 bg-pine-50 border border-pine-200 px-3 py-1 rounded-lg">
+              Sabit Gider Toplamı: 38.500 TL
+            </span>
           </div>
         </section>
 
-        <!-- Kart 3: Haftalık Harcama Dağılımı -->
-        <section class="bg-white border border-pine-200/80 rounded-2xl p-5 sm:p-6 shadow-sm">
-          <div class="flex items-center justify-between gap-2 mb-4">
-            <h2 class="text-base sm:text-lg font-bold text-pine-700">3. Haftalık Harcama Dağılımı (%)</h2>
-            <span class="text-xs font-bold px-3 py-1 rounded-full bg-pine-100 text-pine-700 border border-pine-200">
-              Otomatik Plan
+        <!-- Kart 3: Aylık Değişken Harcama Kalemleri (TL) -->
+        <section class="bg-white border border-pine-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+          <div class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-pine-100">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-pine-700 text-gold-300 font-extrabold text-xs flex items-center justify-center border border-gold-500/40">3</span>
+              <div>
+                <h2 class="text-base sm:text-lg font-bold text-pine-700">Aylık Değişken Harcama Planı (TL)</h2>
+                <p id="variableSubtitle" class="text-xs text-slate-500">Market, yemek ve eğlence bütçenizi girin; aylık toplam bütçe otomatik hesaplansın</p>
+              </div>
+            </div>
+            <button
+              id="addVariableBtn"
+              type="button"
+              onclick="window.addVariableExpense()"
+              class="bg-gold-500 hover:bg-gold-400 active:scale-[0.98] text-pine-900 font-extrabold text-xs sm:text-sm px-3.5 py-2 rounded-xl transition cursor-pointer shadow-sm shrink-0"
+            >
+              + Harcama Ekle
+            </button>
+          </div>
+
+          <div id="variableExpenseList" class="space-y-2.5 mb-3"></div>
+
+          <div class="pt-3 border-t border-pine-100 flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+            <span id="variableWeeklyHint" class="text-slate-500 font-medium">Haftalık harcama karşılığı: 5.000 TL / hafta</span>
+            <span id="variableSummaryText" class="font-extrabold text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-lg">
+              Değişken Harcama Toplamı: 20.000 TL
             </span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            <div>
-              <label for="wMarket" class="block text-xs font-semibold text-slate-600 mb-1.5">Market (%)</label>
-              <input
-                id="wMarket"
-                type="number"
-                min="0"
-                max="100"
-                value="45"
-                class="w-full bg-pine-50/70 border border-pine-200 focus:border-pine-700 focus:bg-white focus:ring-2 focus:ring-pine-700/15 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 outline-none transition"
-              />
-            </div>
-            <div>
-              <label for="wFood" class="block text-xs font-semibold text-slate-600 mb-1.5">Yemek / Dışarı (%)</label>
-              <input
-                id="wFood"
-                type="number"
-                min="0"
-                max="100"
-                value="35"
-                class="w-full bg-pine-50/70 border border-pine-200 focus:border-pine-700 focus:bg-white focus:ring-2 focus:ring-pine-700/15 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 outline-none transition"
-              />
-            </div>
-            <div>
-              <label for="wFun" class="block text-xs font-semibold text-slate-600 mb-1.5">Eğlence / Kişisel (%)</label>
-              <input
-                id="wFun"
-                type="number"
-                min="0"
-                max="100"
-                value="20"
-                class="w-full bg-pine-50/70 border border-pine-200 focus:border-pine-700 focus:bg-white focus:ring-2 focus:ring-pine-700/15 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 outline-none transition"
-              />
-            </div>
-          </div>
-
-          <div id="shareWarning" class="hidden mt-3.5 bg-amber-50 border border-amber-200 text-amber-800 px-3.5 py-2.5 rounded-xl text-xs font-semibold">
-            Harcama kalemi yüzdelerinin toplamı %100 olmalıdır.
-          </div>
-          <div id="deficitWarning" class="hidden mt-3.5 bg-red-50 border border-red-200 text-red-700 px-3.5 py-2.5 rounded-xl text-xs font-semibold">
-            Birikim ve sabit giderler toplamı bütçeyi aşıyor. Birikim oranını veya giderleri düzenleyin.
+          <div id="deficitWarning" class="hidden mt-3.5 bg-red-50 border border-red-200 text-red-700 px-3.5 py-2.5 rounded-xl text-xs font-bold">
+            Uyarı: Birikim ve sabit giderler mevcut gelirinizi aşıyor. Otomatik bütçe moduna geçerek gereken bütçeyi görebilirsiniz.
           </div>
         </section>
       </div>
 
-      <!-- SAĞ PANEL: Aylık Bütçe Özeti ve Projeksiyon (5 Sütun) -->
+      <!-- SAĞ PANEL: Canlı Hesaplanan Aylık Bütçe Özeti -->
       <div class="lg:col-span-5">
-        <section class="bg-white border border-pine-200/80 rounded-2xl p-5 sm:p-6 shadow-sm">
-          <div class="flex items-center justify-between gap-2 mb-4">
+        <section class="bg-white border border-pine-200 rounded-2xl p-5 sm:p-6 shadow-sm sticky top-4">
+          <div class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-pine-100">
             <h2 class="text-base sm:text-lg font-bold text-pine-700">Aylık Bütçe Özeti</h2>
-            <span id="savingsBadge" class="text-xs font-bold px-3 py-1 rounded-full bg-pine-100 text-pine-700 border border-pine-200">
+            <span id="savingsBadge" class="text-xs font-bold px-3 py-1 rounded-full bg-gold-50 text-gold-700 border border-gold-300">
               Aylık Birikim: 6.500 TL
             </span>
           </div>
 
-          <!-- 4 KPI Kartı -->
+          <!-- Ana Öne Çıkan Kart: Otomatik Hesaplanan Toplam Aylık Bütçe -->
+          <div class="bg-gradient-to-br from-pine-700 via-pine-800 to-pine-900 text-white rounded-2xl p-4 sm:p-5 mb-3.5 border border-gold-400/70 shadow-md">
+            <div class="flex items-center justify-between gap-2">
+              <span id="mainBudgetLabel" class="text-xs font-bold uppercase tracking-wider text-gold-300">
+                Otomatik Hesaplanan Aylık Bütçe
+              </span>
+              <span id="savingRateChip" class="text-[11px] font-extrabold bg-gold-400 text-pine-900 px-2.5 py-0.5 rounded-full">
+                %10 Birikim Dahil
+              </span>
+            </div>
+            <div id="kpiTotalBudget" class="text-2xl sm:text-3xl font-extrabold text-white mt-1.5 tracking-tight">
+              65.000 TL
+            </div>
+            <p id="budgetFormulaNote" class="text-xs text-pine-100 mt-1.5">
+              58.500 TL toplam gider + 6.500 TL otomatik birikim payı
+            </p>
+          </div>
+
+          <!-- 4 Alt KPI Kartı -->
           <div class="grid grid-cols-2 gap-3 mb-5">
-            <div class="bg-pine-700 text-white rounded-xl p-3.5 border border-pine-700 shadow-sm">
-              <div class="text-xs font-medium text-pine-100">Birikim Hesabına (Önce)</div>
-              <div id="kpiSavings" class="text-lg sm:text-xl font-extrabold mt-1">6.500 TL</div>
+            <div class="bg-gold-50/80 rounded-xl p-3.5 border border-gold-300 border-l-4 border-l-gold-500">
+              <div class="text-xs font-bold text-gold-700">Birikim Hesabına (Önce)</div>
+              <div id="kpiSavings" class="text-base sm:text-lg font-extrabold text-pine-800 mt-1">6.500 TL</div>
             </div>
-            <div class="bg-pine-50 rounded-xl p-3.5 border border-pine-200 border-l-4 border-l-pine-700">
-              <div class="text-xs font-semibold text-slate-600">Sabit Gider + Kart</div>
-              <div id="kpiFixed" class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">38.500 TL</div>
+            <div class="bg-pine-50/80 rounded-xl p-3.5 border border-pine-200 border-l-4 border-l-pine-700">
+              <div class="text-xs font-bold text-slate-600">Sabit Gider + Kart</div>
+              <div id="kpiFixed" class="text-base sm:text-lg font-extrabold text-slate-900 mt-1">38.500 TL</div>
             </div>
-            <div class="bg-pine-50 rounded-xl p-3.5 border border-pine-200 border-l-4 border-l-pine-500">
-              <div class="text-xs font-semibold text-slate-600">Haftalık Harcama Limiti</div>
-              <div id="kpiWeekly" class="text-lg sm:text-xl font-extrabold text-pine-700 mt-1">5.000 TL</div>
+            <div class="bg-pine-50/80 rounded-xl p-3.5 border border-pine-200 border-l-4 border-l-pine-500">
+              <div class="text-xs font-bold text-slate-600">Haftalık Harcama Limiti</div>
+              <div id="kpiWeekly" class="text-base sm:text-lg font-extrabold text-pine-700 mt-1">5.000 TL</div>
             </div>
-            <div class="bg-pine-50 rounded-xl p-3.5 border border-pine-200 border-l-4 border-l-pine-400">
-              <div class="text-xs font-semibold text-slate-600">12 Aylık Tahmini Birikim</div>
-              <div id="kpiYearly" class="text-lg sm:text-xl font-extrabold text-pine-700 mt-1">78.000 TL</div>
+            <div class="bg-gold-50/60 rounded-xl p-3.5 border border-gold-200 border-l-4 border-l-gold-400">
+              <div class="text-xs font-bold text-slate-600">12 Aylık Tahmini Birikim</div>
+              <div id="kpiYearly" class="text-base sm:text-lg font-extrabold text-pine-800 mt-1">78.000 TL</div>
             </div>
           </div>
 
-          <!-- Yığılmış Yatay Dağılım Çubuğu -->
+          <!-- Yığılmış Oransal Dağılım Çubuğu -->
           <div class="mb-5">
             <div class="h-3.5 bg-pine-100 rounded-full overflow-hidden flex border border-pine-200">
-              <div id="barSavings" class="h-full bg-pine-700 transition-all duration-300" style="width: 10%;"></div>
-              <div id="barFixed" class="h-full bg-pine-500 transition-all duration-300" style="width: 59%;"></div>
-              <div id="barWeekly" class="h-full bg-pine-300 transition-all duration-300" style="width: 31%;"></div>
+              <div id="barSavings" class="h-full bg-gold-500 transition-all duration-300" style="width: 10%;"></div>
+              <div id="barFixed" class="h-full bg-pine-700 transition-all duration-300" style="width: 59%;"></div>
+              <div id="barWeekly" class="h-full bg-pine-400 transition-all duration-300" style="width: 31%;"></div>
             </div>
-            <div class="flex flex-wrap gap-x-4 gap-y-1.5 mt-2.5 text-xs font-medium text-slate-600">
+            <div class="flex flex-wrap gap-x-4 gap-y-1.5 mt-2.5 text-xs font-semibold text-slate-600">
               <span class="inline-flex items-center gap-1.5">
-                <i class="w-2.5 h-2.5 rounded-full bg-pine-700 inline-block"></i>Birikim
+                <i class="w-2.5 h-2.5 rounded-full bg-gold-500 inline-block"></i>Birikim
               </span>
               <span class="inline-flex items-center gap-1.5">
-                <i class="w-2.5 h-2.5 rounded-full bg-pine-500 inline-block"></i>Sabit Gider &amp; Kart
+                <i class="w-2.5 h-2.5 rounded-full bg-pine-700 inline-block"></i>Sabit Gider &amp; Kart
               </span>
               <span class="inline-flex items-center gap-1.5">
-                <i class="w-2.5 h-2.5 rounded-full bg-pine-300 inline-block"></i>Haftalık Harcama Havuzu
+                <i class="w-2.5 h-2.5 rounded-full bg-pine-400 inline-block"></i>Haftalık Harcama Havuzu
               </span>
             </div>
           </div>
@@ -282,9 +351,9 @@
             <div id="weeksGrid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2.5"></div>
           </div>
 
-          <!-- Aylık Kalem Bazlı Bütçe Planı -->
+          <!-- Aylık Kalem Bazlı Bütçe Dağılımı -->
           <div>
-            <h3 class="text-sm font-bold text-pine-700 mb-3">Aylık Kalem Bazlı Bütçe Planı</h3>
+            <h3 class="text-sm font-bold text-pine-700 mb-3">Aylık Kalem Bazlı Dağılım</h3>
             <div id="categoryBars" class="space-y-3"></div>
           </div>
         </section>
@@ -297,135 +366,541 @@
   </div>
 
   <script>
-    (function () {
-      const STORAGE_KEY = "maas_gunu_butce_v3";
+    var STORAGE_KEY = "maas_gunu_otomatik_butce_v5";
 
-      const DEFAULT_EXPENSES = [
-        { name: "Kira", amount: 30000 },
-        { name: "Aidat", amount: 1500 },
-        { name: "Elektrik", amount: 1200 },
-        { name: "Doğalgaz", amount: 1800 },
-        { name: "Su", amount: 500 },
-        { name: "İnternet + Telefon", amount: 1500 },
-        { name: "Ulaşım", amount: 2000 }
-      ];
+    var SAMPLE_FIXED = [
+      { name: "Kira", amount: 30000 },
+      { name: "Aidat", amount: 1500 },
+      { name: "Elektrik", amount: 1200 },
+      { name: "Doğalgaz", amount: 1800 },
+      { name: "Su", amount: 500 },
+      { name: "İnternet + Telefon", amount: 1500 },
+      { name: "Ulaşım", amount: 2000 }
+    ];
 
-      let memoryFallback = null;
+    var SAMPLE_VARIABLE = [
+      { name: "Market", amount: 9000 },
+      { name: "Yemek / Dışarı", amount: 7000 },
+      { name: "Eğlence / Kişisel", amount: 4000 }
+    ];
 
-      let state = {
-        salary: 65000,
-        savingsRate: 10,
-        cardPayment: 0,
-        weeks: 4,
-        expenses: DEFAULT_EXPENSES.map((e) => ({ ...e })),
-        wMarket: 45,
-        wFood: 35,
-        wFun: 20
-      };
+    var state = {
+      mode: "auto", // "auto" = Giderlere göre aylık bütçeyi otomatik hesapla, "fixed" = Girilen gelirden dağıt
+      manualSalary: 65000,
+      savingsRate: 10,
+      cardPayment: 0,
+      weeks: 4,
+      fixedExpenses: SAMPLE_FIXED.map(function (x) {
+        return { name: x.name, amount: x.amount };
+      }),
+      variableExpenses: SAMPLE_VARIABLE.map(function (x) {
+        return { name: x.name, amount: x.amount };
+      })
+    };
 
-      function $(id) {
-        return document.getElementById(id);
-      }
+    function el(id) {
+      return document.getElementById(id);
+    }
 
-      function parseNum(val, fallback) {
-        if (val === "" || val === null || val === undefined) return fallback;
-        const n = Number(String(val).replace(",", "."));
-        return Number.isFinite(n) && n >= 0 ? n : fallback;
-      }
+    function parseNum(val, fallback) {
+      if (val === "" || val === null || val === undefined) return fallback;
+      var num = Number(String(val).replace(",", "."));
+      return Number.isFinite(num) && num >= 0 ? num : fallback;
+    }
 
-      function fmtTL(num) {
-        return Math.round(Number(num) || 0).toLocaleString("tr-TR") + " TL";
-      }
+    function fmtTL(val) {
+      return Math.round(Number(val) || 0).toLocaleString("tr-TR") + " TL";
+    }
 
-      function saveState() {
-        memoryFallback = JSON.parse(JSON.stringify(state));
-        try {
-          if (window.localStorage) {
-            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-          }
-        } catch (_) {}
-      }
+    function escapeHtmlAttr(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
 
-      function loadState() {
-        try {
-          if (window.localStorage) {
-            const raw = window.localStorage.getItem(STORAGE_KEY);
-            if (raw) {
-              const parsed = JSON.parse(raw);
-              if (parsed && typeof parsed === "object") {
-                state = {
-                  salary: parseNum(parsed.salary, 65000),
-                  savingsRate: Math.min(90, parseNum(parsed.savingsRate, 10)),
-                  cardPayment: parseNum(parsed.cardPayment, 0),
-                  weeks: parsed.weeks === 5 ? 5 : 4,
-                  expenses: Array.isArray(parsed.expenses)
-                    ? parsed.expenses.map((x) => ({
-                        name: String(x && x.name !== undefined ? x.name : "Gider"),
-                        amount: parseNum(x && x.amount, 0)
-                      }))
-                    : DEFAULT_EXPENSES.map((e) => ({ ...e })),
-                  wMarket: parseNum(parsed.wMarket, 45),
-                  wFood: parseNum(parsed.wFood, 35),
-                  wFun: parseNum(parsed.wFun, 20)
-                };
+    function saveState() {
+      try {
+        if (window.localStorage) {
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+      } catch (e) {}
+    }
+
+    function loadState() {
+      try {
+        if (window.localStorage) {
+          var raw = window.localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            var p = JSON.parse(raw);
+            if (p && typeof p === "object") {
+              state.mode = p.mode === "fixed" ? "fixed" : "auto";
+              state.manualSalary = parseNum(p.manualSalary, 65000);
+              state.savingsRate = Math.min(90, parseNum(p.savingsRate, 10));
+              state.cardPayment = parseNum(p.cardPayment, 0);
+              state.weeks = Number(p.weeks) === 5 ? 5 : 4;
+              if (Array.isArray(p.fixedExpenses)) {
+                state.fixedExpenses = p.fixedExpenses.map(function (item) {
+                  return {
+                    name: String(item && item.name !== undefined ? item.name : "Sabit Gider"),
+                    amount: parseNum(item && item.amount, 0)
+                  };
+                });
+              }
+              if (Array.isArray(p.variableExpenses)) {
+                state.variableExpenses = p.variableExpenses.map(function (item) {
+                  return {
+                    name: String(item && item.name !== undefined ? item.name : "Harcama"),
+                    amount: parseNum(item && item.amount, 0)
+                  };
+                });
               }
             }
           }
-        } catch (_) {
-          if (memoryFallback) {
-            state = JSON.parse(JSON.stringify(memoryFallback));
-          }
+        }
+      } catch (e) {}
+    }
+
+    function syncTopControls() {
+      var isAuto = state.mode === "auto";
+
+      if (el("modeAutoBtn") && el("modeFixedBtn")) {
+        if (isAuto) {
+          el("modeAutoBtn").className =
+            "flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-extrabold transition cursor-pointer bg-gradient-to-r from-gold-400 to-gold-500 text-pine-900 shadow-sm";
+          el("modeFixedBtn").className =
+            "flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer text-pine-100 hover:text-white";
+        } else {
+          el("modeFixedBtn").className =
+            "flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-extrabold transition cursor-pointer bg-gradient-to-r from-gold-400 to-gold-500 text-pine-900 shadow-sm";
+          el("modeAutoBtn").className =
+            "flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer text-pine-100 hover:text-white";
         }
       }
 
-      function syncInputs() {
-        $("salaryInput").value = state.salary;
-        $("savingsRateInput").value = state.savingsRate;
-        $("cardPaymentInput").value = state.cardPayment;
-        $("weeksInput").value = String(state.weeks);
-        $("wMarket").value = state.wMarket;
-        $("wFood").value = state.wFood;
-        $("wFun").value = state.wFun;
+      if (el("autoBudgetBox") && el("manualSalaryBox")) {
+        if (isAuto) {
+          el("autoBudgetBox").classList.remove("hidden");
+          el("manualSalaryBox").classList.add("hidden");
+        } else {
+          el("autoBudgetBox").classList.add("hidden");
+          el("manualSalaryBox").classList.remove("hidden");
+        }
+      }
 
-        const pills = document.querySelectorAll(".pill");
-        pills.forEach((pill) => {
-          const r = Number(pill.getAttribute("data-rate"));
-          if (r === Number(state.savingsRate)) {
-            pill.className =
-              "pill px-2.5 py-1 text-xs font-semibold rounded-lg border border-pine-700 bg-pine-700 text-white transition cursor-pointer";
-          } else {
-            pill.className =
-              "pill px-2.5 py-1 text-xs font-semibold rounded-lg border border-pine-200 bg-pine-50 text-slate-600 hover:bg-pine-100 transition cursor-pointer";
-          }
+      if (el("modeDescription")) {
+        el("modeDescription").textContent = isAuto
+          ? "Aylık bütçe sabit değildir; girdiğiniz tüm giderler ve birikim oranına göre otomatik hesaplanır."
+          : "Mevcut sabit gelirinizi girin; birikim ve sabit giderler düşülerek haftalık kalan harcama limiti hesaplansın.";
+      }
+
+      if (el("modeBadge")) {
+        el("modeBadge").textContent = isAuto ? "Otomatik Hesap Aktif" : "Sabit Gelir Modu";
+      }
+
+      if (el("variableSubtitle")) {
+        el("variableSubtitle").textContent = isAuto
+          ? "Market, yemek ve eğlence bütçenizi girin; aylık toplam bütçe otomatik hesaplansın"
+          : "Sabit gelir modunda kalan haftalık harcama havuzunuz bu kalemlerin oranına göre dağıtılır";
+      }
+
+      if (el("salaryInput")) el("salaryInput").value = state.manualSalary;
+      if (el("savingsRateInput")) el("savingsRateInput").value = state.savingsRate;
+      if (el("cardPaymentInput")) el("cardPaymentInput").value = state.cardPayment;
+      if (el("weeksInput")) el("weeksInput").value = String(state.weeks);
+
+      var pills = document.querySelectorAll(".pill");
+      for (var i = 0; i < pills.length; i++) {
+        var r = Number(pills[i].getAttribute("data-rate"));
+        if (r === Number(state.savingsRate)) {
+          pills[i].className =
+            "pill px-2.5 py-1.5 text-xs font-bold rounded-lg border border-gold-500 bg-pine-700 text-gold-300 transition cursor-pointer";
+        } else {
+          pills[i].className =
+            "pill px-2.5 py-1.5 text-xs font-bold rounded-lg border border-pine-200 bg-pine-50 text-pine-700 hover:border-gold-500 transition cursor-pointer";
+        }
+      }
+    }
+
+    function renderFixedList() {
+      var container = el("fixedExpenseList");
+      if (!container) return;
+      var html = "";
+      for (var i = 0; i < state.fixedExpenses.length; i++) {
+        var item = state.fixedExpenses[i];
+        html +=
+          '<div class="grid grid-cols-12 gap-2 items-center">' +
+          '<input type="text" value="' +
+          escapeHtmlAttr(item.name) +
+          '" placeholder="Sabit gider adı" oninput="window.editFixedName(' +
+          i +
+          ', this.value)" class="col-span-6 sm:col-span-7 bg-pine-50/60 border border-pine-200 focus:border-gold-500 focus:bg-white rounded-xl px-3 py-2 text-sm font-medium text-slate-900 outline-none transition" />' +
+          '<input type="number" min="0" step="50" value="' +
+          item.amount +
+          '" oninput="window.editFixedAmount(' +
+          i +
+          ', this.value)" onchange="window.editFixedAmount(' +
+          i +
+          ', this.value)" class="col-span-4 bg-pine-50/60 border border-pine-200 focus:border-gold-500 focus:bg-white rounded-xl px-3 py-2 text-sm font-bold text-slate-900 outline-none transition" />' +
+          '<button type="button" title="Sil" onclick="window.deleteFixedExpense(' +
+          i +
+          ')" class="col-span-2 sm:col-span-1 h-9 flex items-center justify-center rounded-xl border border-pine-200 bg-pine-50 text-slate-500 hover:bg-red-50 hover:text-red-600 hover:border-red-200 text-xs font-bold transition cursor-pointer">✕</button>' +
+          "</div>";
+      }
+      container.innerHTML = html;
+    }
+
+    function renderVariableList() {
+      var container = el("variableExpenseList");
+      if (!container) return;
+      var html = "";
+      for (var i = 0; i < state.variableExpenses.length; i++) {
+        var item = state.variableExpenses[i];
+        html +=
+          '<div class="grid grid-cols-12 gap-2 items-center">' +
+          '<input type="text" value="' +
+          escapeHtmlAttr(item.name) +
+          '" placeholder="Harcama kalemi" oninput="window.editVariableName(' +
+          i +
+          ', this.value)" class="col-span-6 sm:col-span-7 bg-gold-50/40 border border-pine-200 focus:border-gold-500 focus:bg-white rounded-xl px-3 py-2 text-sm font-medium text-slate-900 outline-none transition" />' +
+          '<input type="number" min="0" step="50" value="' +
+          item.amount +
+          '" oninput="window.editVariableAmount(' +
+          i +
+          ', this.value)" onchange="window.editVariableAmount(' +
+          i +
+          ', this.value)" class="col-span-4 bg-gold-50/40 border border-pine-200 focus:border-gold-500 focus:bg-white rounded-xl px-3 py-2 text-sm font-bold text-slate-900 outline-none transition" />' +
+          '<button type="button" title="Sil" onclick="window.deleteVariableExpense(' +
+          i +
+          ')" class="col-span-2 sm:col-span-1 h-9 flex items-center justify-center rounded-xl border border-pine-200 bg-pine-50 text-slate-500 hover:bg-red-50 hover:text-red-600 hover:border-red-200 text-xs font-bold transition cursor-pointer">✕</button>' +
+          "</div>";
+      }
+      container.innerHTML = html;
+    }
+
+    function recalculateAll() {
+      var rate = Math.min(90, parseNum(state.savingsRate, 0));
+      var card = parseNum(state.cardPayment, 0);
+      var weeks = Number(state.weeks) === 5 ? 5 : 4;
+
+      var fixedSum = 0;
+      for (var i = 0; i < state.fixedExpenses.length; i++) {
+        fixedSum += parseNum(state.fixedExpenses[i].amount, 0);
+      }
+
+      var variableSum = 0;
+      for (var j = 0; j < state.variableExpenses.length; j++) {
+        variableSum += parseNum(state.variableExpenses[j].amount, 0);
+      }
+
+      var totalCommitted = fixedSum + card;
+
+      if (el("fixedSummaryText")) {
+        el("fixedSummaryText").textContent = "Sabit Gider Toplamı: " + fmtTL(fixedSum);
+      }
+      if (el("variableSummaryText")) {
+        el("variableSummaryText").textContent = "Değişken Harcama Toplamı: " + fmtTL(variableSum);
+      }
+
+      var totalMonthlyBudget = 0;
+      var monthlySavings = 0;
+      var effectiveVariablePool = 0;
+      var isDeficit = false;
+
+      if (state.mode === "auto") {
+        // Otomatik Bütçe Hesaplama Modu:
+        // Toplam harcanacak tutar (sabit + kart + değişken harcamalar) birikim sonrası kalan (1 - rate/100) paya eşittir.
+        var totalSpending = totalCommitted + variableSum;
+        var keepRatio = 1 - rate / 100;
+        totalMonthlyBudget = keepRatio > 0 ? totalSpending / keepRatio : totalSpending;
+        monthlySavings = totalMonthlyBudget - totalSpending;
+        effectiveVariablePool = variableSum;
+      } else {
+        // Sabit Gelirden Dağıtım Modu:
+        totalMonthlyBudget = parseNum(state.manualSalary, 0);
+        monthlySavings = (totalMonthlyBudget * rate) / 100;
+        var rawRemaining = totalMonthlyBudget - monthlySavings - totalCommitted;
+        isDeficit = rawRemaining < 0;
+        effectiveVariablePool = Math.max(0, rawRemaining);
+      }
+
+      if (el("deficitWarning")) {
+        if (isDeficit) {
+          el("deficitWarning").classList.remove("hidden");
+        } else {
+          el("deficitWarning").classList.add("hidden");
+        }
+      }
+
+      var weeklyLimit = effectiveVariablePool / weeks;
+      var yearlySavings = monthlySavings * 12;
+
+      if (el("inlineAutoBudget")) {
+        el("inlineAutoBudget").textContent = fmtTL(totalMonthlyBudget);
+      }
+      if (el("variableWeeklyHint")) {
+        el("variableWeeklyHint").textContent =
+          "Haftalık harcama karşılığı: " + fmtTL(weeklyLimit) + " / hafta";
+      }
+
+      if (el("mainBudgetLabel")) {
+        el("mainBudgetLabel").textContent =
+          state.mode === "auto"
+            ? "Otomatik Hesaplanan Aylık Bütçe"
+            : "Tanımlı Aylık Net Gelir";
+      }
+      if (el("savingRateChip")) {
+        el("savingRateChip").textContent = "%" + rate + " Birikim Dahil";
+      }
+      if (el("kpiTotalBudget")) {
+        el("kpiTotalBudget").textContent = fmtTL(totalMonthlyBudget);
+      }
+      if (el("budgetFormulaNote")) {
+        el("budgetFormulaNote").textContent =
+          fmtTL(totalCommitted + effectiveVariablePool) +
+          " aylık harcama + " +
+          fmtTL(monthlySavings) +
+          " birikim payı";
+      }
+
+      if (el("kpiSavings")) el("kpiSavings").textContent = fmtTL(monthlySavings);
+      if (el("kpiFixed")) el("kpiFixed").textContent = fmtTL(totalCommitted);
+      if (el("kpiWeekly")) el("kpiWeekly").textContent = fmtTL(weeklyLimit);
+      if (el("kpiYearly")) el("kpiYearly").textContent = fmtTL(yearlySavings);
+      if (el("savingsBadge")) {
+        el("savingsBadge").textContent = "Aylık Birikim: " + fmtTL(monthlySavings);
+      }
+
+      // Oransal yatay bar
+      var base = totalMonthlyBudget > 0 ? totalMonthlyBudget : 1;
+      var pSav = Math.min(100, (monthlySavings / base) * 100);
+      var pFix = Math.min(100 - pSav, (totalCommitted / base) * 100);
+      var pWee = Math.max(0, 100 - pSav - pFix);
+
+      if (el("barSavings")) el("barSavings").style.width = pSav + "%";
+      if (el("barFixed")) el("barFixed").style.width = pFix + "%";
+      if (el("barWeekly")) el("barWeekly").style.width = pWee + "%";
+
+      // Haftalık bölmeler
+      var weeksGrid = el("weeksGrid");
+      if (weeksGrid) {
+        var wHtml = "";
+        for (var w = 1; w <= weeks; w++) {
+          wHtml +=
+            '<div class="bg-pine-50 border border-pine-200 hover:border-gold-400 rounded-xl p-2.5 text-center transition">' +
+            '<span class="block text-[11px] font-semibold text-slate-500">' +
+            w +
+            ". Hafta</span>" +
+            '<strong class="text-sm font-extrabold text-pine-700">' +
+            fmtTL(weeklyLimit) +
+            "</strong></div>";
+        }
+        weeksGrid.innerHTML = wHtml;
+      }
+
+      // Kalem bazlı dağılım grafiği
+      var categories = [
+        { label: "Birikim Hesabı (Önce Kendine Öde)", amount: monthlySavings, color: "bg-gold-500" },
+        { label: "Sabit Giderler & Tam Ekstre", amount: totalCommitted, color: "bg-pine-700" }
+      ];
+
+      var varColors = ["bg-pine-600", "bg-pine-500", "bg-gold-400", "bg-pine-400"];
+      for (var k = 0; k < state.variableExpenses.length; k++) {
+        var vItem = state.variableExpenses[k];
+        var vAmount = parseNum(vItem.amount, 0);
+        if (state.mode === "fixed") {
+          vAmount = variableSum > 0 ? (vAmount / variableSum) * effectiveVariablePool : 0;
+        }
+        categories.push({
+          label: (vItem.name || "Harcama") + " (Aylık)",
+          amount: vAmount,
+          color: varColors[k % varColors.length]
         });
       }
 
-      function renderExpenses() {
-        const list = $("expenseList");
-        list.innerHTML = "";
+      var maxVal = 1;
+      for (var m = 0; m < categories.length; m++) {
+        if (categories[m].amount > maxVal) maxVal = categories[m].amount;
+      }
 
-        state.expenses.forEach((item, idx) => {
-          const row = document.createElement("div");
-          row.className = "grid grid-cols-12 gap-2 items-center";
+      var catBars = el("categoryBars");
+      if (catBars) {
+        var cHtml = "";
+        for (var c = 0; c < categories.length; c++) {
+          var cat = categories[c];
+          var pct = Math.min(100, (cat.amount / maxVal) * 100);
+          cHtml +=
+            "<div>" +
+            '<div class="flex justify-between items-center text-xs sm:text-sm mb-1">' +
+            '<span class="font-medium text-slate-700">' +
+            escapeHtmlAttr(cat.label) +
+            "</span>" +
+            '<strong class="font-bold text-pine-700">' +
+            fmtTL(cat.amount) +
+            "</strong></div>" +
+            '<div class="h-2.5 bg-pine-100 rounded-full overflow-hidden">' +
+            '<div class="h-full rounded-full transition-all duration-300 ' +
+            cat.color +
+            '" style="width:' +
+            pct +
+            '%;"></div></div></div>';
+        }
+        catBars.innerHTML = cHtml;
+      }
+    }
 
-          const nameInp = document.createElement("input");
-          nameInp.type = "text";
-          nameInp.value = item.name;
-          nameInp.placeholder = "Gider kalemi";
-          nameInp.className =
-            "col-span-6 sm:col-span-7 bg-pine-50/70 border border-pine-200 focus:border-pine-700 focus:bg-white rounded-xl px-3 py-2 text-sm font-medium text-slate-900 outline-none transition";
-          nameInp.addEventListener("input", function (e) {
-            state.expenses[idx].name = e.target.value;
-            saveState();
-          });
+    // Global Etkileşim Fonksiyonları
+    window.setCalcMode = function (mode) {
+      state.mode = mode === "fixed" ? "fixed" : "auto";
+      saveState();
+      syncTopControls();
+      recalculateAll();
+    };
 
-          const amtInp = document.createElement("input");
-          amtInp.type = "number";
-          amtInp.min = "0";
-          amtInp.step = "50";
-          amtInp.value = item.amount;
-          amtInp.className =
-            "col-span-4 bg-pine-50/70 border border-pine-200 focus:border-pine-700 focus:bg-white rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 outline-none transition";
-          amtInp.addEventListener("input", function (e) {
-            state.expenses[idx].amount = parseNum(e.target.value, 0);
-            
+    window.updateSalary = function (val) {
+      state.manualSalary = parseNum(val, 0);
+      saveState();
+      recalculateAll();
+    };
+
+    window.updateWeeks = function (val) {
+      state.weeks = Number(val) === 5 ? 5 : 4;
+      saveState();
+      recalculateAll();
+    };
+
+    window.updateSavingsRate = function (val) {
+      state.savingsRate = Math.min(90, parseNum(val, 0));
+      saveState();
+      syncTopControls();
+      recalculateAll();
+    };
+
+    window.setSavingsPreset = function (rate) {
+      state.savingsRate = Number(rate) || 10;
+      saveState();
+      syncTopControls();
+      recalculateAll();
+    };
+
+    window.updateCardPayment = function (val) {
+      state.cardPayment = parseNum(val, 0);
+      saveState();
+      recalculateAll();
+    };
+
+    window.addFixedExpense = function () {
+      state.fixedExpenses.push({ name: "Yeni Sabit Gider", amount: 0 });
+      saveState();
+      renderFixedList();
+      recalculateAll();
+    };
+
+    window.editFixedName = function (idx, val) {
+      if (state.fixedExpenses[idx]) {
+        state.fixedExpenses[idx].name = val;
+        saveState();
+      }
+    };
+
+    window.editFixedAmount = function (idx, val) {
+      if (state.fixedExpenses[idx]) {
+        state.fixedExpenses[idx].amount = parseNum(val, 0);
+        saveState();
+        recalculateAll();
+      }
+    };
+
+    window.deleteFixedExpense = function (idx) {
+      state.fixedExpenses.splice(idx, 1);
+      saveState();
+      renderFixedList();
+      recalculateAll();
+    };
+
+    window.addVariableExpense = function () {
+      state.variableExpenses.push({ name: "Yeni Harcama", amount: 0 });
+      saveState();
+      renderVariableList();
+      recalculateAll();
+    };
+
+    window.editVariableName = function (idx, val) {
+      if (state.variableExpenses[idx]) {
+        state.variableExpenses[idx].name = val;
+        saveState();
+        recalculateAll();
+      }
+    };
+
+    window.editVariableAmount = function (idx, val) {
+      if (state.variableExpenses[idx]) {
+        state.variableExpenses[idx].amount = parseNum(val, 0);
+        saveState();
+        recalculateAll();
+      }
+    };
+
+    window.deleteVariableExpense = function (idx) {
+      state.variableExpenses.splice(idx, 1);
+      saveState();
+      renderVariableList();
+      recalculateAll();
+    };
+
+    window.loadSampleData = function () {
+      state = {
+        mode: state.mode,
+        manualSalary: 65000,
+        savingsRate: 10,
+        cardPayment: 0,
+        weeks: 4,
+        fixedExpenses: SAMPLE_FIXED.map(function (x) {
+          return { name: x.name, amount: x.amount };
+        }),
+        variableExpenses: SAMPLE_VARIABLE.map(function (x) {
+          return { name: x.name, amount: x.amount };
+        })
+      };
+      saveState();
+      syncTopControls();
+      renderFixedList();
+      renderVariableList();
+      recalculateAll();
+    };
+
+    window.resetAllData = function () {
+      state = {
+        mode: "auto",
+        manualSalary: 0,
+        savingsRate: 10,
+        cardPayment: 0,
+        weeks: 4,
+        fixedExpenses: [],
+        variableExpenses: []
+      };
+      saveState();
+      syncTopControls();
+      renderFixedList();
+      renderVariableList();
+      recalculateAll();
+    };
+
+    function initApp() {
+      loadState();
+      syncTopControls();
+      renderFixedList();
+      renderVariableList();
+      recalculateAll();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+</html>
+```
